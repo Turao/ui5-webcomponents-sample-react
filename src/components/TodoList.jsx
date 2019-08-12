@@ -12,17 +12,11 @@ export default class TodoList extends Component {
   }
 
   onTodoChanged = changedTodo => {
-    const todos = this.props.items;
-    const updatedTodos = todos.map(todo => {
-      if (todo.id === changedTodo.id) todo = changedTodo;
-      return todo;
-    });
-    this.props.onChange(updatedTodos); // lift state
+    this.props.onChange(changedTodo); // lift state
   }
 
   onTodoDeleted = deletedTodo => {
-    const todos = this.props.items;
-    this.props.onChange(_.without(todos, deletedTodo)); // lift state
+    this.props.onDelete(deletedTodo); // lift state
   }
 
   render() {

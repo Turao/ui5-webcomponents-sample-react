@@ -23,14 +23,21 @@ class App extends Component {
 
   onAddTodo = todo => {
     const { todos } = this.state;
-    console.log('adding todo to incompletes', todo, todos);
     todo.id = todos.length + 1;
     this.setState({todos: _.concat(todos, todo)})
     console.log(this.state.todos);
   }
 
-  onTodoListChanged = todos => {
-    console.log('need to refresh list!');   
+  onTodoChanged = changedTodo => {
+    const { todos } = this.state;
+    this.setState({
+      todos: todos.map(todo => todo.id === changedTodo.id ? changedTodo : todo)
+    })
+  }
+
+  onTodoDeletedFromTodoList = deletedTodo => {
+    const { todos } = this.state;
+    this.setState({todos: _.without(todos, deletedTodo)});
   }
 
   render() {
@@ -54,8 +61,8 @@ class App extends Component {
               collapsed={undone.length === 0 || undefined}>
               <TodoList
                 items={undone}
-                onChange={this.onTodoListChanged}
-                onDelete={this.onTodoListChanged}
+                onChange={this.onTodoChanged}
+                onDelete={this.onTodoDeletedFromTodoList}
               />
             </ui5-panel>
 
@@ -64,8 +71,8 @@ class App extends Component {
               collapsed={done.length === 0 || undefined}>
               <TodoList
                 items={done}
-                onChange={this.onTodoListChanged}
-                onDelete={this.onTodoListChanged}
+                onChange={this.onTodoChanged}
+                onDelete={this.onTodoDeletedFromTodoList}
               />
             </ui5-panel>
           </div>
